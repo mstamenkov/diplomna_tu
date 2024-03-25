@@ -1,0 +1,1 @@
+{"id":"08d7238e-edf8-4879-a501-db433d09d626","commandName":"OSCommand","status":"FINISHED","error":null,"currentExecutor":null,"inputKeys":{"command":"ls"},"outputKeys":{"output":"commandData\ndeployment.yaml\nDockerfile\nexecutionData\nmvnw\nmvnw.cmd\npom.xml\nsrc\ntarget\n","exitCode":0},"tags":["os","command"]}

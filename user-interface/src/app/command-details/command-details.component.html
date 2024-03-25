@@ -1,0 +1,52 @@
+<div >
+    <mat-card>
+        <mat-divider inset></mat-divider>
+        <mat-card-header fxLayout="row">
+            <mat-card-subtitle>ID</mat-card-subtitle>
+            <mat-divider vertical></mat-divider>
+            <mat-card-content>
+                <div>{{commandDetails.id}}</div>
+            </mat-card-content>
+        </mat-card-header>
+        <mat-divider inset></mat-divider>
+        <mat-card-header fxLayout="row">
+            <mat-card-subtitle>Name</mat-card-subtitle>
+            <mat-divider vertical></mat-divider>
+            <mat-card-content>
+                <div>{{commandDetails.name}}</div>
+            </mat-card-content>
+        </mat-card-header>
+        <mat-divider inset></mat-divider>
+        <mat-card-header>
+            <mat-card-subtitle>Description</mat-card-subtitle>
+            <mat-divider vertical></mat-divider>
+            <mat-card-content>
+                <div>{{commandDetails.description}}</div>
+            </mat-card-content>
+        </mat-card-header>
+        <mat-divider inset></mat-divider>
+        <mat-card-header>
+            <mat-card-subtitle>Input keys</mat-card-subtitle>
+            <mat-divider vertical></mat-divider>
+            <div style="flex-direction: column; margin-left: 5px;">
+            <mat-card-content *ngFor="let subparam of commandDetails.inputKeys | keyvalue">
+                <div [innerHTML] = "'<b>' + $any(subparam).key + '</b>' + ' (' + $any(subparam).value + ')'"></div>
+            </mat-card-content>
+        </div>
+        </mat-card-header>
+        <mat-divider inset></mat-divider>
+        <mat-card-header>
+            <mat-card-subtitle>Output keys</mat-card-subtitle>
+            <mat-divider vertical></mat-divider>
+            <div style="flex-direction: column; margin-left: 5px;">
+            <mat-card-content *ngFor="let subparam of commandDetails.outputKeys | keyvalue">
+                <div [innerHTML] = "'<b>' + $any(subparam).key + '</b>' + ' (' + $any(subparam).value + ')'"></div>
+            </mat-card-content>
+        </div>
+        </mat-card-header>
+        <mat-divider inset></mat-divider>
+    </mat-card>
+</div>
+
+<button (click)="openDialog(command)" mat-flat-button color="primary">Trigger</button>
+<button (click)="deleteCommand()" mat-flat-button color="primary">Delete</button>

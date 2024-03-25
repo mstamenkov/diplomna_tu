@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: angular-ui
+  name: angular-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-ui
+  strategy: { }
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: angular-ui
+    spec:
+      containers:
+        - image: mstamenkov/angular-ui:latest
+          name: angular-ui
+          imagePullPolicy: Always
+          resources: { }
+          ports :
+            - containerPort : 80
+              protocol : TCP
+status: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: angular-ui
+  name: angular-ui
+spec:
+  ports:
+    - name: angular-port
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: angular-ui
+  type: LoadBalancer
+

@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Enter Input Keys</h1>
+<div mat-dialog-content>
+    <form [formGroup]="data.inputKeysForm" *ngIf="!data.status">
+        
+            <label *ngFor="let command of data.inputKeysForm.controls | keyvalue; let type of data.paramType | keyvalue">
+                {{command.key}}:
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>{{type.value}}</mat-label>
+                    <textarea required matInput type="text" formControlName={{command.key}} cdkTextareaAutosize></textarea>
+                </mat-form-field>
+            </label>        
+    </form>
+
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Tags (comma separated)</mat-label>
+            <textarea cdkTextareaAutosize [cdkAutosizeMinRows]="5" matInput
+                [(ngModel)]="data.command.tagsAsString"></textarea>
+        </mat-form-field>
+    </p>
+
+</div>
+<div mat-dialog-actions matI>
+    <button mat-button (click)="onCancel()" *ngIf="!data.status">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial mat-flat-button
+        color="primary" [disabled]="!data.inputKeysForm.valid">Trigger</button>
+</div>

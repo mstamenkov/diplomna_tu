@@ -1,0 +1,12 @@
+.navbar-dark{
+    margin-bottom: 1%;
+    background-color: #673ab7;
+}
+
+.nav-item{
+    color: black;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #fff;
+  }

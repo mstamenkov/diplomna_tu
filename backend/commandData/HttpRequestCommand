@@ -1,0 +1,1 @@
+{"id":0,"name":"HttpRequestCommand","description":"executes HttpRequest by given input keys.","inputKeys":{"headers":"Object","method":"String","body":"Object","url":"String","timeout":"Integer"},"outputKeys":{"result":"Object","responseCode":"Integer"},"tags":["httpRequest"],"executors":null}

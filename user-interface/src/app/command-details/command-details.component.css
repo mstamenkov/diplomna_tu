@@ -1,0 +1,37 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+  }
+
+td.last {
+    width: 1px;
+    white-space: nowrap;
+}
+
+tr{
+    border: 1px solid black;
+}
+
+td{
+    display: flex;
+
+}
+
+table{
+    margin-bottom: 1%;
+}
+
+mat-card-content{
+    margin: 10px 0 10px 1%;
+}
+
+mat-card-subtitle{
+    margin: 10px 0 10px 0;
+    width: 80px;
+}
+
+button{
+    margin-top: 1%;
+}

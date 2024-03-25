@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Result</h1>
+<div mat-dialog-content>
+    <label>
+        Status:
+        <p>
+            <mat-form-field appearance="outline">
+                <textarea value="{{data.status}}" readonly matInput cdkTextareaAutosize></textarea>
+            </mat-form-field>
+        </p>
+    </label>
+    <label>
+        Execution ID:
+        <p>
+            <mat-form-field appearance="outline">
+                <textarea value="{{data.executionId}}" readonly matInput cdkTextareaAutosize></textarea>
+            </mat-form-field>
+        </p>
+    </label>
+    <p *ngIf="data.error">
+        <label> Error:
+            <mat-form-field appearance="outline" style="color: red;">
+                <textarea value="{{data.error}}" readonly matInput cdkTextareaAutosize></textarea>
+            </mat-form-field>
+        </label>
+    </p>
+    <div *ngIf="!data.error">
+        <p *ngFor="let param of data.outputKeys | keyvalue">
+            <label> {{param.key}}
+                <mat-form-field appearance="outline">
+                    <textarea value="{{param.value | json}}" readonly matInput cdkTextareaAutosize></textarea>
+                </mat-form-field>
+            </label>
+        </p>
+    </div>
+</div>
+<div mat-dialog-actions matI>
+    <button mat-button (click)="onCancel()" mat-flat-button color="primary" mat-dialog-close>Close</button>
+</div>

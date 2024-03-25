@@ -1,0 +1,1 @@
+{"id":1,"name":"OSCommand","description":"executes OS command","inputKeys":{"command":"String"},"outputKeys":{"result":"String","status":"Integer"},"tags":["os","command"],"executors":null}

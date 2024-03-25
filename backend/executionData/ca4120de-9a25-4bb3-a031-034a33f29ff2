@@ -1,0 +1,1 @@
+{"id":"ca4120de-9a25-4bb3-a031-034a33f29ff2","commandName":"testCompositeCommand","status":"FAILED","error":"Invalid expression String","currentExecutor":"HttpRequestCommand","inputKeys":{"osCommand":"ls","secondOsCommand":"ifconfig","url":"https://postman-echo.com/post","timeout":30},"outputKeys":{},"tags":null}

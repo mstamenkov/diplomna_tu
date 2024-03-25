@@ -1,0 +1,21 @@
+<table mat-table [dataSource]="data" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let command"> {{command.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let command"> {{command.description}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tags">
+    <th mat-header-cell *matHeaderCellDef> Tags </th>
+    <td mat-cell *matCellDef="let command"> {{command.tags}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/command-details/{{row.id}}">
+  </tr>
+</table>
+<router-outlet></router-outlet>

@@ -1,0 +1,1 @@
+{"id":"fdb0307e-9796-4e3f-9baf-a1340e95ef6e","commandName":"testCompositeCommand","status":"FAILED","error":"Invalid expression String","currentExecutor":"HttpRequestCommand","inputKeys":{"osCommand":"ls","secondOsCommand":"ls","url":"https://postman-echo.com/post","timeout":30},"outputKeys":{},"tags":null}
