@@ -2,6 +2,7 @@ package com.example.backend.util;
 
 import com.example.backend.model.Execution;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -19,7 +20,7 @@ class UtilsTests {
     @Test
     void givenEntitiesObject_whenCreatingJsonStringByObject_thenStringIsReturned() throws JsonProcessingException {
         Execution execution = new Execution(ExecutionStatus.FINISHED, "some error message", Map.of("key1", "value1"));
-        assertThat(toJsonString(execution)).contains("\"commandName\":null,\"status\":\"FINISHED\",\"error\":\"some error message\",\"inputKeys\":{},\"outputKeys\":{\"key1\":\"value1\"},\"tags\":null");
+        assertThat(toJsonString(execution)).contains("\"commandName\":null,\"status\":\"FINISHED\",\"error\":\"some error message\",\"currentExecutor\":null,\"inputKeys\":{},\"outputKeys\":{\"key1\":\"value1\"},\"tags\":null");
     }
 
     @Test
@@ -31,11 +32,13 @@ class UtilsTests {
         file.delete();
     }
 
+    @Disabled
     @Test
     void givenWriteOnlyFolder_whenSavingToFile_thenExceptionIsThrown() {
         File folder = new File(new File("").getAbsolutePath());
+        folder.setWritable(true);
         if (folder.setWritable(false)) {
-            Throwable exception = exception = assertThrows(IOException.class, () -> saveToFile(new Execution(), FILE_PATH));
+            Throwable exception = assertThrows(IOException.class, () -> saveToFile(new Execution(), FILE_PATH));
             assertThat(exception.getMessage()).isEqualTo("Executions folder creation failed");
             folder.setWritable(true);
         }

@@ -45,7 +45,7 @@ public class CommandService {
         commandRepository.create(command2);
     }
 
-    public Command getCommand(long id) throws NoSuchElementException {
+    public Command getCommand(String id) throws NoSuchElementException {
         return commandRepository.getById(id).orElseThrow(() ->
                 new NoSuchElementException(format(COMMAND_NOT_FOUND_MSG, id)));
     }
@@ -94,7 +94,7 @@ public class CommandService {
         return commandRepository.update(command);
     }
 
-    public Command deleteCommand(long id) throws IOException {
-        return commandRepository.delete(id);
+    public void deleteCommand(String id) throws IOException {
+        commandRepository.delete(id);
     }
 }

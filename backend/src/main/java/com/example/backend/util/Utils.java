@@ -37,7 +37,7 @@ public class Utils {
     public static Properties buildStreamProps(String id, Class serdesClass){
         Properties properties = new Properties();
         properties.put(APPLICATION_ID_CONFIG, id);
-        properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        properties.put(BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
         properties.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         properties.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, serdesClass);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");

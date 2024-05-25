@@ -27,7 +27,7 @@ public class CommandController {
     }
 
     @GetMapping("/command/{id}")
-    public ResponseEntity getCommand(@PathVariable("id") long id) {
+    public ResponseEntity getCommand(@PathVariable("id") String id) {
         return ResponseEntity.ok(commandService.getCommand(id));
     }
 
@@ -49,7 +49,8 @@ public class CommandController {
     }
 
     @DeleteMapping("/command/{id}")
-    public ResponseEntity deleteCommand(@PathVariable("id") long id) throws IOException {
-        return ResponseEntity.ok(commandService.deleteCommand(id));
+    public ResponseEntity deleteCommand(@PathVariable("id") String id) throws IOException {
+        commandService.deleteCommand(id);
+        return ResponseEntity.ok(null);
     }
 }

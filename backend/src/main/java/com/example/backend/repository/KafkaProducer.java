@@ -19,7 +19,7 @@ public class KafkaProducer implements ILifecycleController, IProducer {
     @Override
     public void init() {
         Properties properties = new Properties();
-        properties.put(BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        properties.put(BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
         properties.put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(VALUE_SERIALIZER_CLASS_CONFIG, EntitiesSerializer.class.getName());
         producer = new org.apache.kafka.clients.producer.KafkaProducer<>(properties);

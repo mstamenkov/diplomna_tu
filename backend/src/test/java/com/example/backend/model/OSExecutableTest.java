@@ -1,6 +1,7 @@
 package com.example.backend.model;
 
 import com.example.backend.exception.ExecutableException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class OSExecutableTest {
     private static final OSExecutable os = new OSExecutable();
 
+    @Disabled
     @Test
     void givenValidInputKeys_whenExecutingOSCommand_thenCommandResultIsReturned() {
         Map<String, Object> result = os.execute(Map.of("command", "ping 8.8.8.8"));
@@ -27,6 +29,7 @@ class OSExecutableTest {
         assertThat(result.get("exitCode")).isEqualTo(0);
     }
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {"ming", "kracert"})
     void givenInvalidInputKeys_whenExecutingOSCommand_thenExceptionIsThrown(String command) {

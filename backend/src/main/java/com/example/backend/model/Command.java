@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.UUID;
 
 public class Command implements Serializable, Entities {
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private long id;
+    //private static final AtomicInteger count = new AtomicInteger(0);
+    private String id = UUID.randomUUID().toString();
     private String name;
     private String description;
     private Map<String, String> inputKeys;
@@ -24,7 +24,7 @@ public class Command implements Serializable, Entities {
         this.inputKeys = inputKeys;
         this.outputKeys = outputKeys;
         this.tags = tags;
-        id = count.incrementAndGet();
+        //id = count.incrementAndGet();
     }
 
     public Command(String name, String description, Map<String, String> inputKeys, Map<String, String> outputKeys, List<String> tags, List<Executor> executors) {
@@ -34,18 +34,18 @@ public class Command implements Serializable, Entities {
         this.outputKeys = outputKeys;
         this.tags = tags;
         this.executors = executors;
-        id = count.incrementAndGet();
+        //id = count.incrementAndGet();
     }
 
     public Command() {
-        id = count.incrementAndGet();
+        //id = count.incrementAndGet();
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

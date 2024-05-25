@@ -11,9 +11,9 @@ public interface CommandRepository {
 
     Command update(Command command) throws IOException;
 
-    Command delete(long id) throws IOException;
+    void delete(String id) throws IOException;
 
-    Optional<Command> getById(long id);
+    Optional<Command> getById(String id);
 
     Optional<Command> getByName(String name);
 

@@ -19,7 +19,7 @@ class CommandControllerTest {
     CommandService commandService = new CommandService(commandRepository);
     CommandController controller = new CommandController(commandService);
 
-    long createCommand(String tag) throws IOException {
+    String createCommand(String tag) throws IOException {
         Command command = new Command();
         command.setTags(List.of(tag));
         commandRepository.create(command);
@@ -28,7 +28,7 @@ class CommandControllerTest {
 
     @Test
     void givenValidCommandId_whenGettingById_ThenCommandIsReturned() throws IOException {
-        long id = createCommand("");
+        String id = createCommand("");
         ResponseEntity entity = controller.getCommand(id);
         Command command = (Command) entity.getBody();
         assertThat(command.getId()).isEqualTo(id);
@@ -38,7 +38,7 @@ class CommandControllerTest {
 
     @Test
     void givenInvalidCommandId_whenGettingById_ThenExceptionIsThrown(){
-        Throwable exception = assertThrows(NoSuchElementException.class, () -> controller.getCommand(10));
+        Throwable exception = assertThrows(NoSuchElementException.class, () -> controller.getCommand("10"));
         assertThat(exception.getMessage()).isEqualTo("Command with id 10 is not found.");
     }
 
@@ -51,7 +51,7 @@ class CommandControllerTest {
 
     @Test
     void whenGettingAllCommandsWithTags_thenCommandIsPresented() throws IOException {
-        long id = createCommand("new tag");
+        String id = createCommand("new tag");
         List<Command> commands = (List<Command>) controller.getAllCommands(List.of("new tag")).getBody();
         assertThat(commands.get(0).getId()).isEqualTo(id);
     }

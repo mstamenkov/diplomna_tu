@@ -8,14 +8,15 @@
             </mat-form-field>
         </p>
     </label>
-    <label>
-        Execution ID:
-        <p>
-            <mat-form-field appearance="outline">
-                <textarea value="{{data.executionId}}" readonly matInput cdkTextareaAutosize></textarea>
-            </mat-form-field>
-        </p>
-    </label>
+    <p *ngIf="data.id">
+        <label>
+            Execution ID:
+                <mat-form-field appearance="outline">
+                    <textarea value="{{data.id}}" readonly matInput cdkTextareaAutosize></textarea>
+                </mat-form-field>
+        </label>
+    </p>
+
     <p *ngIf="data.error">
         <label> Error:
             <mat-form-field appearance="outline" style="color: red;">
@@ -35,4 +36,5 @@
 </div>
 <div mat-dialog-actions matI>
     <button mat-button (click)="onCancel()" mat-flat-button color="primary" mat-dialog-close>Close</button>
+    <button *ngIf="data.status == 'RUNNING'" mat-button (click)="onRefresh()" mat-flat-button color="accent">Refresh</button>
 </div>

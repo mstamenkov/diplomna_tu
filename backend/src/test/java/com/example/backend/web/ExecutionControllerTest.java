@@ -17,6 +17,7 @@ import java.util.*;
 import static com.example.backend.util.Constants.*;
 import static com.example.backend.util.Constants.BODY;
 import static com.example.backend.util.ExecutionStatus.FINISHED;
+import static com.example.backend.util.ExecutionStatus.RUNNING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -84,7 +85,7 @@ class ExecutionControllerTest {
     }
 
     @Test
-    void givenExecutionParams_whenExecutingCommand_thenResultIsReturned() throws Throwable {
+    void givenExecutionParams_whenExecutingCommand_thenExecutionIsRunning() throws Throwable {
         createHttpRequest();
         Command command = new Command("HttpRequestCommand", "executes HttpRequest by given input keys.", new HashMap<>(), new HashMap<>(), new ArrayList<>());
         command.getInputKeys().put(URL, "String");
@@ -103,9 +104,9 @@ class ExecutionControllerTest {
         ExecutionResult executionResult = controller.execute(params);
         assertThat(executionResult.getCommandName()).isEqualTo(command.getName());
         assertThat(executionResult.getInputKeys()).isEqualTo(inputKeys);
-        assertThat(executionResult.getStatus()).isEqualTo(FINISHED);
+        assertThat(executionResult.getStatus()).isEqualTo(RUNNING);
         assertThat(executionResult.getError()).isNull();
-        assertThat(executionResult.getOutputKeys().get(RESPONSE_CODE)).isEqualTo(200);
+        assertThat(executionResult.getOutputKeys().get(RESPONSE_CODE)).isNull();
 
     }
 }

@@ -33,5 +33,6 @@ mat-card-subtitle{
 }
 
 button{
-    margin-top: 1%;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
 }

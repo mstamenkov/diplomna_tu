@@ -20,7 +20,7 @@ export class DataService {
     }));
   }
   
-  getCommandDetails(id:number){
+  getCommandDetails(id:string){
     return this.http.get(this.url+'/command/'+id).pipe(catchError((error) => {
       this.sendErrorMessage(error);
       return throwError(() => new Error(error.message));
@@ -34,7 +34,7 @@ export class DataService {
     }));
   }
 
-  deleteRequest(id:number){
+  deleteRequest(id:string){
     return this.http.delete<any>(this.url + '/command/' +id).pipe(catchError((error) => {
       this.sendErrorMessage(error);
       return throwError(() => new Error(error.message));

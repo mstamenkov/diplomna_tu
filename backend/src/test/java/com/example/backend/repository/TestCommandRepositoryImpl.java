@@ -2,6 +2,7 @@ package com.example.backend.repository;
 
 import com.example.backend.model.Command;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,17 @@ public class TestCommandRepositoryImpl implements CommandRepository {
     }
 
     @Override
-    public Optional<Command> getById(long id) {
+    public Command update(Command command) throws IOException {
+        return null;
+    }
+
+    @Override
+    public void delete(String id) throws IOException {
+
+    }
+
+    @Override
+    public Optional<Command> getById(String id) {
         for (Command command : commands) {
             if (command.getId() == id) {
                 return Optional.of(command);

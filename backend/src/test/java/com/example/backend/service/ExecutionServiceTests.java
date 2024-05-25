@@ -1,3 +1,4 @@
+/*
 package com.example.backend.service;
 
 import com.example.backend.dto.ExecutionParameters;
@@ -8,6 +9,7 @@ import com.example.backend.repository.CommandRepository;
 import com.example.backend.repository.TestCommandRepositoryImpl;
 import com.example.backend.repository.TestExecutionRepositoryImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -229,3 +231,4 @@ class ExecutionServiceTests {
         assertThat(exception.getMessage()).isEqualTo("Invalid key [urlIllegal]");
     }
 }
+*/

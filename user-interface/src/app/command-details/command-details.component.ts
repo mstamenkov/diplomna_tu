@@ -21,7 +21,7 @@ export class CommandDetailsComponent implements OnInit {
     })
   }
 
-  id: number = Number(this.route.snapshot.paramMap.get('id'));
+  id: string = String(this.route.snapshot.paramMap.get('id'));
   commandDetails: any = {};
   command: any = {};
   request: any = {};
@@ -110,7 +110,7 @@ export class CommandDetailsComponent implements OnInit {
     console.log(response);
     this.resultDialogData.status = response.status;
     this.resultDialogData.inputKeys = response.inputKeys;
-    this.resultDialogData.executionId = response.id;
+    this.resultDialogData.id = response.id;
     if (response.status === 'FINISHED') {
       this.resultDialogData.outputKeys = response.outputKeys;
     } else {

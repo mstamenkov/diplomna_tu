@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataService } from '../data.service';
 
@@ -10,7 +9,9 @@ import { DataService } from '../data.service';
 })
 export class DialogExecutionsComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DialogExecutionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dataService: DataService, private router: Router) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private dataService: DataService) { }
+  
+  executionId = this.data.id;
 
   ngOnInit(): void {
     this.dataService.getCommandDetails
@@ -18,5 +19,12 @@ export class DialogExecutionsComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  onRefresh(): void {
+    this.dataService.getExecutionById(this.executionId).subscribe((result) => {
+      this.data = result;
+    });
+    console.log(this.data);
   }
 }

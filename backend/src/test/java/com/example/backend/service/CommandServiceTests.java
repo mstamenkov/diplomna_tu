@@ -37,7 +37,7 @@ class CommandServiceTests {
 
     @Test
     void givenInvalidCommandId_whenGettingCommandById_thenExceptionIsThrown() {
-        Throwable exception = assertThrows(NoSuchElementException.class, () -> commandService.getCommand(30));
+        Throwable exception = assertThrows(NoSuchElementException.class, () -> commandService.getCommand("30"));
         assertThat(exception.getMessage()).isEqualTo("Command with id 30 is not found.");
     }
 }
