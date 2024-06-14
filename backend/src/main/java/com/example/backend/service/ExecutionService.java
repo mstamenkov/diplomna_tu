@@ -212,7 +212,7 @@ public class ExecutionService{
                     if (execution.getError().contains(":")) {
                         execution.setError(execution.getError().substring(execution.getError().indexOf(':') + 1));
                     }
-                    execution.setError(e.getMessage());
+                    execution.setError(e.getMessage()); //провери това
                     createExecutionInstance(execution);
                 }
             }

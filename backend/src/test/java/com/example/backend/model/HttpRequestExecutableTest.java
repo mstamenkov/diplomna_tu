@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.example.backend.exception.ExecutableException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -63,11 +64,11 @@ class HttpRequestExecutableTest {
         assertThat(exception.getMessage()).isEqualTo("URI with undefined scheme");
     }
 
-    @Disabled
     @Test
     void givenWrongMethod_whenExecutingHttpRequestCommand_thenNotFoundIsReturned() {
         inputKeys.replace(HTTP_METHOD, "GET");
-        assertThat(executable.execute(inputKeys).get(RESPONSE_CODE)).isEqualTo(404);
+        Throwable throwable = assertThrows(ExecutableException.class, () -> executable.execute(inputKeys).get(RESPONSE_CODE));
+        assertThat(throwable.getMessage()).contains("Invalid request. Status code 404");
     }
 
     @Mock

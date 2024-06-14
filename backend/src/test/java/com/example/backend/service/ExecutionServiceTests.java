@@ -1,4 +1,3 @@
-/*
 package com.example.backend.service;
 
 import com.example.backend.dto.ExecutionParameters;
@@ -9,7 +8,6 @@ import com.example.backend.repository.CommandRepository;
 import com.example.backend.repository.TestCommandRepositoryImpl;
 import com.example.backend.repository.TestExecutionRepositoryImpl;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -73,12 +71,12 @@ class ExecutionServiceTests {
 
         setInputKeys();
 
-        Command composedCommand = new Command("composedCommand", "fdf", composedCommandInput, Map.of("output1", "$(abc.result.body.arr[1])", "output2", "$(abc2.output2)"), new ArrayList<>(),
+        Command composedCommand = new Command("composedCommand", "fdf", composedCommandInput, Map.of("output1", "$(abc.output.body.arr[1])", "output2", "$(abc2.output2)"), new ArrayList<>(),
                 List.of(new Executor("HttpRequestCommand", "abc", Map.of("url", "$(input.url)", "headers", "$(input.headers)", "method", "$(input.method)", "timeout", 25,
                         "body", Map.of("local", 1, "arr", new String[]{"fdf", "gd", "fdf"}))), new Executor("composedCommand2", "abc2", Map.of("url", "$(input.url)", "headers", "$(input.headers)", "method", "$(input.method)", "timeout", 25,
                         "body", Map.of("local", 1, "arr", new String[]{"fdf", "gd", "fdf"}), "command", "$(input.command)"))));
 
-        Command composedCommand2 = new Command("composedCommand2", "fdf", composedCommandInput, Map.of("output1", "$(abc.result.body)", "output2", "$(abc23.result)"), new ArrayList<>(),
+        Command composedCommand2 = new Command("composedCommand2", "fdf", composedCommandInput, Map.of("output1", "$(abc.output.body)", "output2", "$(abc23.output)"), new ArrayList<>(),
                 List.of(new Executor("HttpRequestCommand", "abc", Map.of("url", "$(input.url)", "headers", "$(input.headers)", "method", "$(input.method)", "timeout", 25,
                         "body", Map.of("local", 1, "arr", new String[]{"fdf", "gd", "fdf"}))), new Executor("OSCommand", "abc23", Map.of("command", "$(input.command)"))));
 
@@ -94,8 +92,8 @@ class ExecutionServiceTests {
         params.setCommandName("HttpRequestCommand");
         params.setInputKeys(inputKeys);
         params.setTags(tags);
-        Execution execution = executionService.executeCommand(params);
-        Map<String, Object> bodyResult = (Map<String, Object>) execution.getOutputKeys().get(RESULT);
+        Execution execution = executionService.executeCommand(params, new Execution());
+        Map<String, Object> bodyResult = (Map<String, Object>) execution.getOutputKeys().get(OUTPUT);
         assertThat(bodyResult.get(BODY)).isEqualTo(body);
         assertThat(execution.getStatus()).isEqualTo(FINISHED);
         assertThat(execution.getError()).isNull();
@@ -109,7 +107,7 @@ class ExecutionServiceTests {
         params.setCommandName("HttpRequestCommand");
         params.setInputKeys(inputKeys);
         params.setTags(List.of("tag"));
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(params));
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(params, new Execution()));
         assertThat(exception.getMessage()).isEqualTo("parameter timeout must to be Integer");
     }
 
@@ -120,7 +118,7 @@ class ExecutionServiceTests {
         params.setCommandName("HttpRequestCommand");
         params.setInputKeys(inputKeys);
         params.setTags(tags);
-        Execution execution = executionService.executeCommand(params);
+        Execution execution = executionService.executeCommand(params, new Execution());
         assertThat(executionService.getExecution(execution.getId())).isEqualTo(execution);
     }
 
@@ -144,11 +142,11 @@ class ExecutionServiceTests {
         params.setCommandName("HttpRequestCommand");
         params.setInputKeys(inputKeys);
         params.setTags(tags);
-        Execution execution = executionService.executeCommand(params);
+        Execution execution = executionService.executeCommand(params, new Execution());
         List<String> tag = new ArrayList<>();
         tag.add("test");
         params.setTags(tag);
-        executionService.executeCommand(params);
+        executionService.executeCommand(params, new Execution());
         assertThat(executionService.getAllExecutions(tags)).hasSize(2);
         assertThat(executionService.getAllExecutions(tags)).contains(execution);
     }
@@ -158,13 +156,13 @@ class ExecutionServiceTests {
     @Test
     void givenValidInputData_whenComposedCommandIsExecuted_thenExecutionIsReturned() throws Throwable {
         ExecutionParameters executionParams = new ExecutionParameters();
-        executionParams.setInputKeys(Map.of("url", "https://postman-echo.com/post", "timeout", 25, "headers", Map.of("Authentication", "Basic aW1lOnBhcm9sYQ=="), "method", "post", "command", "dir"));
+        executionParams.setInputKeys(Map.of("url", "https://postman-echo.com/post", "timeout", 25, "headers", Map.of("Authentication", "Basic aW1lOnBhcm9sYQ=="), "method", "post", "command", "echo test echo message"));
         executionParams.setCommandName("composedCommand");
-        Execution execution = executionService.executeCommand(executionParams);
+        Execution execution = executionService.executeCommand(executionParams, new Execution());
         assertThat(execution.getStatus()).isEqualTo(FINISHED);
         assertThat(execution.getError()).isNull();
         assertThat(execution.getOutputKeys().get("output1")).isEqualTo("gd");
-        assertThat(execution.getOutputKeys().get("output2")).asString().contains("Volume Serial Number is");
+        assertThat(execution.getOutputKeys().get("output2")).asString().contains("test echo message");
     }
 
     @Test
@@ -179,7 +177,7 @@ class ExecutionServiceTests {
         ExecutionParameters executionParams = new ExecutionParameters();
         executionParams.setInputKeys(Map.of("url", "https://postman-echo.com/post", "timeout", 25, "headers", Map.of("Authentication", "Basic aW1lOnBhcm9sYQ=="), "method", "post", "command", "dir"));
         executionParams.setCommandName("composedCommand3");
-        Execution execution = executionService.executeCommand(executionParams);
+        Execution execution = executionService.executeCommand(executionParams, new Execution());
         assertThat(execution.getOutputKeys().get("output2")).isNull();
     }
 
@@ -195,8 +193,8 @@ class ExecutionServiceTests {
         ExecutionParameters executionParams = new ExecutionParameters();
         executionParams.setInputKeys(Map.of("url", "https://postman-echo.com/post", "timeout", 25, "headers", Map.of("Authentication", "Basic aW1lOnBhcm9sYQ=="), "method", "post", "command", "dir"));
         executionParams.setCommandName("composedCommand4");
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(executionParams));
-        assertThat(exception.getMessage()).isEqualTo("Invalid key [illegal, test, test2]");
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(executionParams, new Execution()));
+        assertThat(exception.getMessage()).isEqualTo("Invalid or missing key [illegal, test, test2]");
     }
 
     @Test
@@ -211,8 +209,8 @@ class ExecutionServiceTests {
         ExecutionParameters executionParams = new ExecutionParameters();
         executionParams.setInputKeys(Map.of("url", "https://postman-echo.com/post", "timeout", 25, "headers", Map.of("Authentication", "Basic aW1lOnBhcm9sYQ=="), "method", "post", "command", "dir"));
         executionParams.setCommandName("composedCommand5");
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(executionParams));
-        assertThat(exception.getMessage()).isEqualTo("Invalid key [invalidUrlKey]");
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(executionParams, new Execution()));
+        assertThat(exception.getMessage()).isEqualTo("Invalid or missing key [invalidUrlKey]");
     }
 
     @Test
@@ -227,8 +225,7 @@ class ExecutionServiceTests {
         ExecutionParameters executionParams = new ExecutionParameters();
         executionParams.setInputKeys(Map.of("url", "https://postman-echo.com/post", "timeout", 25, "headers", Map.of("Authentication", "Basic aW1lOnBhcm9sYQ=="), "method", "post", "command", "dir"));
         executionParams.setCommandName("composedCommand6");
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(executionParams));
-        assertThat(exception.getMessage()).isEqualTo("Invalid key [urlIllegal]");
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> executionService.executeCommand(executionParams, new Execution()));
+        assertThat(exception.getMessage()).isEqualTo("Invalid or missing key [urlIllegal]");
     }
 }
-*/

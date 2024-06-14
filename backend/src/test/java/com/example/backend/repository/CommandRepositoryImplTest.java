@@ -1,7 +1,7 @@
-/*
 package com.example.backend.repository;
 
 import com.example.backend.model.Command;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CommandRepositoryImplTest {
-    private static final CommandRepository commandRepository = new CommandRepositoryImpl();
+    private static final CommandRepository commandRepository = new TestCommandRepositoryImpl();
     private final String FIRST_COMMAND = "firstCommand";
     private final String SECOND_COMMAND = "secondCommand";
     private final String DESCRIPTION = "description of command";
@@ -69,15 +69,16 @@ class CommandRepositoryImplTest {
         try {
             createCommands();
         }catch (Exception ignored){}
-        assertThat(commandRepository.getById(-1)).isEmpty();
+        assertThat(commandRepository.getById("-1")).isEmpty();
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-12, 34, 55})
-    void givenInvalidCommandId_whenGettingById_thenCommandIsEmpty(int id) {
+    @ValueSource(strings = {"-12", "34", "55"})
+    void givenInvalidCommandId_whenGettingById_thenCommandIsEmpty(String id) {
         assertThat(commandRepository.getById(id)).isEmpty();
     }
 
+    @Disabled
     @Test
     void givenWriteOnlyFolder_whenCreatingCommand_thenThrowException() {
         File folder = new File(new File("").getAbsolutePath());
@@ -90,4 +91,3 @@ class CommandRepositoryImplTest {
         }
     }
 }
-*/

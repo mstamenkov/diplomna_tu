@@ -28,7 +28,7 @@ public class TestCommandRepositoryImpl implements CommandRepository {
     @Override
     public Optional<Command> getById(String id) {
         for (Command command : commands) {
-            if (command.getId() == id) {
+            if (command.getId().equals(id)) {
                 return Optional.of(command);
             }
         }

@@ -21,21 +21,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class OSExecutableTest {
     private static final OSExecutable os = new OSExecutable();
 
-    @Disabled
     @Test
     void givenValidInputKeys_whenExecutingOSCommand_thenCommandResultIsReturned() {
-        Map<String, Object> result = os.execute(Map.of("command", "ping 8.8.8.8"));
-        assertThat(result.get("result").toString()).contains("Ping");
+        Map<String, Object> result = os.execute(Map.of("command", "echo This is test text line"));
+        assertThat(result.get("output").toString()).contains("This is test text line");
         assertThat(result.get("exitCode")).isEqualTo(0);
     }
 
-    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {"ming", "kracert"})
     void givenInvalidInputKeys_whenExecutingOSCommand_thenExceptionIsThrown(String command) {
         Throwable exception = assertThrows(ExecutableException.class, () -> os.execute(Map.of("command", command)));
-        assertThat(exception.getMessage()).isEqualTo(format("'%s' is not recognized as an internal or external command,\n" +
-                "operable program or batch file.\n", command));
+        assertThat(exception.getMessage()).isIn(format("'%s' is not recognized as an internal or external command,\n" +
+                "operable program or batch file.\n", command), format("sh: 1: %s: not found\n",command));
     }
 
     @Mock

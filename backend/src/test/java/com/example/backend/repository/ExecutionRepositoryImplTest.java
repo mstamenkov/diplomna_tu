@@ -1,9 +1,10 @@
-/*
 package com.example.backend.repository;
 
 import com.example.backend.model.Execution;
 import com.example.backend.util.ExecutionStatus;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExecutionRepositoryImplTest {
-    private static final ExecutionRepository executionRepository = new ExecutionRepositoryImpl();
+    private static final ExecutionRepository executionRepository = new TestExecutionRepositoryImpl();
     private final String NAME = "ExecName";
     private final ExecutionStatus STATUS = ExecutionStatus.FINISHED;
     private final Map<String, Object> INPUT_KEYS = Map.of("key1", "value1");
@@ -39,6 +40,7 @@ class ExecutionRepositoryImplTest {
         }
     }
 
+    @Order(1)
     @Test
     void givenExecutionId_whenGettingExecution_thenExecutionIsPresent() {
         String executionId = createExecution().getId();
@@ -53,6 +55,7 @@ class ExecutionRepositoryImplTest {
         assertThat(execution.getTags()).isEqualTo(TAGS);
     }
 
+    @Disabled
     @Test
     void givenWriteOnlyFolder_whenCreatingCommand_thenThrowException() {
         File folder = new File(new File("").getAbsolutePath());
@@ -65,6 +68,7 @@ class ExecutionRepositoryImplTest {
         }
     }
 
+    @Order(2)
     @Test
     void whenGettingAllExecutions_thenAllExecutionsArePresent() {
         Execution execution = createExecution();
@@ -74,4 +78,3 @@ class ExecutionRepositoryImplTest {
         assertThat(executions).contains(execution);
     }
 }
-*/
