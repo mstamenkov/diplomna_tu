@@ -209,10 +209,10 @@ public class ExecutionService{
                     e.printStackTrace();
                     execution.setStatus(FAILED);
                     execution.setError(e.getMessage());
+                    execution.setTags(params.getTags());
                     if (execution.getError().contains(":")) {
                         execution.setError(execution.getError().substring(execution.getError().indexOf(':') + 1));
                     }
-                    execution.setError(e.getMessage()); //провери това
                     createExecutionInstance(execution);
                 }
             }
