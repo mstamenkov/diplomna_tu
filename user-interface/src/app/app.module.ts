@@ -21,6 +21,7 @@ import { DialogExecutionsComponent } from './dialog-executions/dialog-executions
 import {MatTableModule} from '@angular/material/table';
 import {MatCardModule} from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {MatDividerModule} from '@angular/material/divider';
     MatTableModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 <h1 mat-dialog-title>Result</h1>
 <div mat-dialog-content>
+    <label class="sector-separator">OUTPUT DATA</label>
     <label>
         Status:
         <p>
@@ -26,6 +27,17 @@
     </p>
     <div *ngIf="!data.error">
         <p *ngFor="let param of data.outputKeys | keyvalue">
+            <label> {{param.key}}
+                <mat-form-field appearance="outline">
+                    <textarea value="{{param.value | json}}" readonly matInput cdkTextareaAutosize></textarea>
+                </mat-form-field>
+            </label>
+        </p>
+    </div>
+
+    <div *ngIf="!data.error">
+        <label class="sector-separator">INPUT DATA</label>
+        <p *ngFor="let param of data.inputKeys | keyvalue">
             <label> {{param.key}}
                 <mat-form-field appearance="outline">
                     <textarea value="{{param.value | json}}" readonly matInput cdkTextareaAutosize></textarea>
