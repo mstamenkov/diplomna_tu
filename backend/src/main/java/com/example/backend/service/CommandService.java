@@ -18,6 +18,7 @@ public class CommandService {
 
     private static final String COMMAND_NOT_FOUND_MSG = "Command with id %s is not found.";
     private static final String COMMAND_INVOKE_MSG = "Command cannot invoke itself";
+    private static final String EMPTY_PARAMS_MSG = "params can't be empty";
 
     public CommandService(CommandRepository commandRepository) {
         this.commandRepository = commandRepository;
@@ -58,7 +59,7 @@ public class CommandService {
     }
 
     public void createCommand(Command command) throws IOException {
-        if(command.getName() == null || command.getInputKeys() == null || command.getOutputKeys() == null)throw new IllegalArgumentException("params can't be empty");
+        if(command.getName() == null || command.getInputKeys() == null || command.getOutputKeys() == null)throw new IllegalArgumentException(EMPTY_PARAMS_MSG);
         if(command.getExecutors() != null) {
             command.getExecutors().forEach(executor -> {
                 if (executor.getCommandId().equals(command.getName()))

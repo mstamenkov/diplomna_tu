@@ -15,14 +15,20 @@ import com.google.gson.JsonPrimitive;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.backend.util.Constants.HTTP_REQUEST_COMMAND;
-import static com.example.backend.util.Constants.OS_COMMAND;
+import static com.example.backend.util.Constants.*;
 import static com.example.backend.util.ExecutionStatus.*;
 import static java.lang.String.format;
 
 public class ExecutionService{
     CommandRepository commandRepository;
     ExecutionRepository executionRepository;
+
+    private static final String INVALID_PARAM_TYPE_MSG = "parameter %s must to be %s";
+    private static final String ILLEGAL_HTTP_METHOD_MSG = "Illegal HTTP method";
+    private static final String EXECUTOR_NOT_FOUND_MSG = "Execution with id %s is not found.";
+    private static final String INVALID_INPUT_KEY_MSG = "Invalid input key value";
+    private static final String MISSING_KEY_MSG = "Invalid or missing key ";
+    private static final String INVALID_EXPRESSION_MSG = "Invalid expression ";
 
     public ExecutionService(CommandRepository commandRepository, ExecutionRepository executionRepository) {
         this.commandRepository = commandRepository;
@@ -78,15 +84,15 @@ public class ExecutionService{
             if (inputKey.getValue().getClass().getSimpleName().equals(keyType) || keyType.equals("Object")) {
                 return inputKey;
             } else
-                throw new IllegalArgumentException(format("parameter %s must to be %s", inputKey.getKey(), keyType));
+                throw new IllegalArgumentException(format(INVALID_PARAM_TYPE_MSG, inputKey.getKey(), keyType));
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("Illegal HTTP method");
+            throw new IllegalArgumentException(ILLEGAL_HTTP_METHOD_MSG);
         }
     }
 
     public Execution getExecution(String id) throws NoSuchElementException {
         return executionRepository.getById(id).orElseThrow(() ->
-                new NoSuchElementException(format("Execution with id %s is not found.", id)));
+                new NoSuchElementException(format(EXECUTOR_NOT_FOUND_MSG, id)));
     }
 
     public List<Execution> getAllExecutions(List<String> tags) {
@@ -122,7 +128,7 @@ public class ExecutionService{
                         outputAliasExecution.put(command.getAlias(), executeComposedCommand(subCommandParams, null));
                     }
                 } catch (NullPointerException e) {
-                    throw new ExecutableException("Invalid input key value", e);
+                    throw new ExecutableException(INVALID_INPUT_KEY_MSG, e);
                 }
 
             });
@@ -140,8 +146,8 @@ public class ExecutionService{
         JsonObject object;
         Gson gson = new Gson();
         String[] dataPath = validateComposedCommandExpression(dataPathString);
-        if (dataPath[0].equals("input")) {
-            dataPath = Arrays.stream(dataPath).filter(elem -> !elem.equals("input")).toArray(String[]::new);
+        if (dataPath[0].equals(INPUT)) {
+            dataPath = Arrays.stream(dataPath).filter(elem -> !elem.equals(INPUT)).toArray(String[]::new);
             object = gson.toJsonTree(params.getInputKeys()).getAsJsonObject();
             //gson.toJsonTree(params.getInputKeys()).getAsJsonObject();
         } else {
@@ -155,7 +161,7 @@ public class ExecutionService{
     private void resolveKeys(JsonObject object, String[] dataPath, Map<String, Object> commandKey, String keyName) {
         Gson gson = new Gson();
         if (!object.has(dataPath[0])) {
-            throw new IllegalArgumentException("Invalid or missing key " + Arrays.toString(dataPath));
+            throw new IllegalArgumentException(MISSING_KEY_MSG + Arrays.toString(dataPath));
         }
         for (int i = 0; i < dataPath.length; i++) {
             JsonElement temp;
@@ -188,7 +194,7 @@ public class ExecutionService{
 
     private String[] validateComposedCommandExpression(String expression) {
         if (!expression.matches("^\\$\\([\\w.]*[^.]+[)]$")) {
-            throw new IllegalArgumentException("Invalid expression " + expression);
+            throw new IllegalArgumentException(INVALID_EXPRESSION_MSG + expression);
         }
         return expression.replaceAll("[$()]", "").split("[.\\[\\]]+");
     }

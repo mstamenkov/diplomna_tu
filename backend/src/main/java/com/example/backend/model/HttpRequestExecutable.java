@@ -24,6 +24,11 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 public class HttpRequestExecutable implements Executable {
     HttpClient client;
 
+    private static final String ILLEGAL_HTTP_METHOD_ERROR_MSG = "Illegal HTTP method";
+    private static final String INVALID_REQUEST_ERROR_MSG = "Invalid request. Status code %s";
+
+    private static final String URL_VALIDATION_REGEX = "[^a-zA-Z0-9/\\-._:?&=#+%]";
+
     public HttpRequestExecutable(HttpClient client) {
         this.client = client;
     }
@@ -60,10 +65,10 @@ public class HttpRequestExecutable implements Executable {
     private HttpRequest requestBuilder(Map<String, Object> inputParams) throws JsonProcessingException, URISyntaxException {
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(inputParams.get(BODY));
-        String HTTPMethod = inputParams.get(HTTP_METHOD).toString().toUpperCase().replaceAll(" ","");
-        if(HttpMethod.resolve(HTTPMethod) == null)throw new IllegalArgumentException("Illegal HTTP method");
+        String HTTPMethod = inputParams.get(HTTP_METHOD).toString().toUpperCase().replaceAll(" ", EMPTY);
+        if(HttpMethod.resolve(HTTPMethod) == null)throw new IllegalArgumentException(ILLEGAL_HTTP_METHOD_ERROR_MSG);
         HttpRequest.Builder requestBuild = HttpRequest.newBuilder()
-                .uri(new URI((String) inputParams.get(URL)))
+                .uri(new URI(inputParams.get(URL).toString().replaceAll(URL_VALIDATION_REGEX, EMPTY)))
                 .method(HTTPMethod, HttpRequest.BodyPublishers.ofString(body));
         if (inputParams.containsKey(TIMEOUT)) {
             requestBuild.timeout(Duration.ofSeconds((int) inputParams.get(TIMEOUT)));
@@ -79,7 +84,8 @@ public class HttpRequestExecutable implements Executable {
         if(isNotEmpty(response.body())) {
             try {
                 HashMap<String, HashMap<String, Object>> buffer = mapper.readValue(response.body(), HashMap.class);
-                result.put(BODY, buffer.get(DATA));
+                if(buffer.get(DATA) != null)result.put(BODY, buffer.get(DATA));
+                else result.put(BODY, buffer);
             }catch (JsonProcessingException e){
                 result.put(BODY, response.body());
             }
@@ -96,6 +102,6 @@ public class HttpRequestExecutable implements Executable {
     }
 
     private void buildError(int code) throws IOException {
-        throw new IOException(format("Invalid request. Status code %s", code));
+        throw new IOException(format(INVALID_REQUEST_ERROR_MSG, code));
     }
 }

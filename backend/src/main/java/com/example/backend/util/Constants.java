@@ -18,4 +18,6 @@ public class Constants {
     public static final String COMMANDS_TOPIC = "commands";
     public static final String EXECUTIONS_TOPIC = "executions";
     public static final String LOG_MESSAGE = "\nReceived new metadata. %s\n" + "Topic: %s\n" + "Key: %s\n" + "Partition: %s\n" + "Offset: %s\n" + "Timestamp: %s";
+    public static final String EMPTY = "";
+    public static final String INPUT = "input";
 }
